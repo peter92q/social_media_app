@@ -53,8 +53,8 @@ export default function LoginForm({ setVisible }) {
       <div className="login_1">
       <h1 style={{fontWeight: "900", letterSpacing: "10px", 
       alignItems: "center", justifyContent:"center",
-      fontSize: "6vw", display:"flex", marginRight: '35px', color: "blue"}}>COSMOS</h1>
-        <span>
+      fontSize: "6vw", display:"flex", color: "blue" ,paddingTop: "10px" }}>COSMOS</h1>
+        <span style={{fontSize: "17px", textAlign: "center"}}>
           Cosmos helps you connect and share with the people in your life.
         </span>
       </div>
