@@ -1,103 +1,119 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import DisplayAccessibility from "./DisplayAccessibility";
-import HelpSupport from "./HelpSupport";
-import SettingsPrivacy from "./SettingsPrivacy";
-import { useDispatch } from "react-redux";
-import Cookies from "js-cookie";
-export default function UserMenu({ user }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [visible, setVisible] = useState(0);
-  const logout = () => {
-    Cookies.set("user", "");
-    dispatch({
-      type: "LOGOUT",
-    });
-    navigate("/login");
-  };
+import "./style.css";
+import { Link } from "react-router-dom";
+import {
+  Friends,
+  FriendsActive,
+  Gaming,
+  Home,
+  HomeActive,
+  Market,
+  Notifications,
+  Search,
+  Watch,
+} from "../../svg";
+import { useSelector } from "react-redux";
+import SearchMenu from "./SearchMenu";
+import { useRef, useState } from "react";
+
+import useClickOutside from "../../helpers/clickOutside";
+import UserMenu from "./userMenu";
+export default function Header({ page, getAllPosts }) {
+  const { user } = useSelector((user) => ({ ...user }));
+  const color = "#65676b";
+  const [showSearchMenu, setShowSearchMenu] = useState(false);
+  const [showAllMenu, setShowAllMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const allmenu = useRef(null);
+  const usermenu = useRef(null);
+  useClickOutside(allmenu, () => {
+    setShowAllMenu(false);
+  });
+  useClickOutside(usermenu, () => {
+    setShowUserMenu(false);
+  });
+
   return (
-    <div className="mmenu">
-      {visible === 0 && (
-        <div>
-          <Link to="/profile" className="mmenu_header hover3">
-            <img src={user?.picture} alt="" />
-            <div className="mmenu_col">
-              <span>
-                {user?.first_name} {user?.last_name}
-              </span>
-              <span>See your profile</span>
-            </div>
-          </Link>
-          <div className="mmenu_splitter"></div>
-          <div className="mmenu_main hover3">
-            <div className="small_circle">
-              <i className="report_filled_icon"></i>
-            </div>
-            <div className="mmenu_col">
-              <div className="mmenu_span1">Give feedback</div>
-              <div className="mmenu_span2">Help us improve cosmos</div>
-            </div>
+    <header>
+      <div className="header_left">
+        <Link to="/" className="header_logo">
+          <div className="circle">
+            <h1 style={{color:"blue"}}>C</h1>
           </div>
-          <div className="mmenu_splitter"></div>
-          <div
-            className="mmenu_item hover3"
-            onClick={() => {
-              setVisible(1);
-            }}
-          >
-            <div className="small_circle">
-              <i className="settings_filled_icon"></i>
-            </div>
-            <span>Settings & privacy</span>
-            <div className="rArrow">
-              <i className="right_icon"></i>
-            </div>
-          </div>
-          <div
-            className="mmenu_item hover3"
-            onClick={() => {
-              setVisible(2);
-            }}
-          >
-            <div className="small_circle">
-              <i className="help_filled_icon"></i>
-            </div>
-            <span>Help & support</span>
-            <div className="rArrow">
-              <i className="right_icon"></i>
-            </div>
-          </div>
-          <div
-            className="mmenu_item hover3"
-            onClick={() => {
-              setVisible(3);
-            }}
-          >
-            <div className="small_circle">
-              <i className="dark_filled_icon"></i>
-            </div>
-            <span>Display & Accessibility</span>
-            <div className="rArrow">
-              <i className="right_icon"></i>
-            </div>
-          </div>
-          <div
-            className="mmenu_item hover3"
-            onClick={() => {
-              logout();
-            }}
-          >
-            <div className="small_circle">
-              <i className="logout_filled_icon"></i>
-            </div>
-            <span>Logout</span>
-          </div>
+        </Link>
+        <div
+          className="search search1"
+          onClick={() => {
+            setShowSearchMenu(true);
+          }}
+        >
+          <Search color={color} />
+          <input
+            type="text"
+            placeholder="Search Cosmos"
+            className="hide_input"
+          />
         </div>
+      </div>
+      {showSearchMenu && (
+        <SearchMenu
+          color={color}
+          setShowSearchMenu={setShowSearchMenu}
+          token={user.token}
+        />
       )}
-      {visible === 1 && <SettingsPrivacy setVisible={setVisible} />}
-      {visible === 2 && <HelpSupport setVisible={setVisible} />}
-      {visible === 3 && <DisplayAccessibility setVisible={setVisible} />}
-    </div>
+      <div className="header_middle">
+        <Link
+          to="/"
+          className={`middle_icon ${page === "home" ? "active" : "hover1"}`}
+          onClick={() => getAllPosts()}
+        >
+          {page === "home" ? <HomeActive /> : <Home color={color} />}
+        </Link>
+        <Link
+          to="/friends"
+          className={`middle_icon ${page === "friends" ? "active" : "hover1"}`}
+        >
+          {page === "friends" ? <FriendsActive /> : <Friends color={color} />}
+        </Link>
+        <Link to="/" className="middle_icon hover1">
+          <Watch color={color} />
+          <div className="middle_notification">9+</div>
+        </Link>
+        <Link to="/" className="middle_icon hover1">
+          <Market color={color} />
+        </Link>
+        <Link to="/" className="middle_icon hover1 ">
+          <Gaming color={color} />
+        </Link>
+      </div>
+      <div className="header_right">
+        <Link
+          to="/profile"
+          className={`profile_link hover1 ${
+            page === "profile" ? "active_link" : ""
+          }`}
+        >
+          <img src={user?.picture} alt="" />
+          <span>{user?.first_name}</span>
+        </Link>
+        
+        <div className="circle_icon hover1">
+          <Notifications />
+          <div className="right_notification">5</div>
+        </div>
+        <div
+          className={`circle_icon hover1 ${showUserMenu && "active_header"}`}
+          ref={usermenu}
+        >
+          <div
+            onClick={() => {
+              setShowUserMenu((prev) => !prev);
+            }}
+          >
+          </div>
+          {showUserMenu && <UserMenu user={user} />}
+        </div>
+      </div>
+    </header>
   );
 }
