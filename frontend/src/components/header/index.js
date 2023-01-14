@@ -40,7 +40,7 @@ export default function Header({ page, getAllPosts }) {
       <div className="header_left">
         <Link to="/" className="header_logo">
           <div className="circle">
-            <Logo />
+            <h4 style={{color:'blue', fontWeight:'900', fontSize: "5vh"}}>C</h4>
           </div>
         </Link>
         <div
