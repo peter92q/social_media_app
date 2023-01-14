@@ -41,7 +41,7 @@ export default function Header({ page, getAllPosts }) {
       <div className="header_left">
         <Link to="/" className="header_logo">
           <div className="circle">
-            <Logo />
+            <h1 style={{color:"blue"}}>C</h1>
           </div>
         </Link>
         <div
