@@ -1,12 +1,15 @@
 import "./style.css";
 import { Link } from "react-router-dom";
 import {
+  ArrowDown,
   Friends,
   FriendsActive,
   Gaming,
   Home,
   HomeActive,
+  Logo,
   Market,
+
   Notifications,
   Search,
   Watch,
@@ -37,15 +40,14 @@ export default function Header({ page, getAllPosts }) {
       <div className="header_left">
         <Link to="/" className="header_logo">
           <div className="circle">
-            <h1 style={{color:"blue"}}>C</h1>
+            <Logo />
           </div>
         </Link>
         <div
           className="search search1"
           onClick={() => {
             setShowSearchMenu(true);
-          }}
-        >
+          }}>
           <Search color={color} />
           <input
             type="text"
@@ -65,14 +67,12 @@ export default function Header({ page, getAllPosts }) {
         <Link
           to="/"
           className={`middle_icon ${page === "home" ? "active" : "hover1"}`}
-          onClick={() => getAllPosts()}
-        >
+          onClick={() => getAllPosts()}>
           {page === "home" ? <HomeActive /> : <Home color={color} />}
         </Link>
         <Link
           to="/friends"
-          className={`middle_icon ${page === "friends" ? "active" : "hover1"}`}
-        >
+          className={`middle_icon ${page === "friends" ? "active" : "hover1"}`}>
           {page === "friends" ? <FriendsActive /> : <Friends color={color} />}
         </Link>
         <Link to="/" className="middle_icon hover1">
@@ -96,20 +96,19 @@ export default function Header({ page, getAllPosts }) {
           <img src={user?.picture} alt="" />
           <span>{user?.first_name}</span>
         </Link>
-        
         <div className="circle_icon hover1">
           <Notifications />
-          <div className="right_notification">5</div>
         </div>
         <div
           className={`circle_icon hover1 ${showUserMenu && "active_header"}`}
-          ref={usermenu}
-        >
+          ref={usermenu}>
           <div
             onClick={() => {
               setShowUserMenu((prev) => !prev);
-            }}
-          >
+            }}>
+            <div style={{ transform: "translateY(2px)" }}>
+              <ArrowDown />
+            </div>
           </div>
           {showUserMenu && <UserMenu user={user} />}
         </div>
